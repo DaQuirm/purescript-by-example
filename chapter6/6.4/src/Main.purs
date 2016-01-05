@@ -4,6 +4,9 @@ import Prelude
 import Control.Monad.Eff
 import Control.Monad.Eff.Console
 
+import Data.Array
+import Data.Foldable
+
 {-
   Exercise 1
   (Easy) The following newtype represents a complex number:
@@ -57,6 +60,11 @@ instance functorNonEmpty :: Functor NonEmpty where
   (Difficult) Write a Foldable instance for NonEmpty. Hint: reuse the Foldable
   instance for arrays.
 -}
+
+instance foldableNonEmpty :: Foldable NonEmpty where
+  foldr func init (NonEmpty value array) = foldr func init (value : array)
+  foldl func init (NonEmpty value array) = foldl func init (value : array)
+  foldMap func (NonEmpty value array) = foldMap func (value : array)
 
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do

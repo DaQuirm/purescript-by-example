@@ -24,6 +24,20 @@ instance eqNonEmpty :: (Eq a) => Eq (NonEmpty a) where
   Write an Ord instance for Extended a which reuses the Ord instance for a.
 -}
 
+data Extended a = Finite a | Infinite
+
+instance eqExtended :: (Eq a) => Eq (Extended a) where
+  eq Infinite Infinite = true
+  eq Infinite (Finite _) = false
+  eq (Finite _) Infinite = false
+  eq (Finite one) (Finite two) = eq one two
+
+instance ordExtended :: (Ord a) => Ord (Extended a) where
+  compare Infinite Infinite = EQ
+  compare Infinite (Finite _) = GT
+  compare (Finite _) Infinite = LT
+  compare (Finite one) (Finite two) = compare one two
+
 {-
   Exercise 3
   (Difficult) Given an type constructor f which defines an ordered container
@@ -48,3 +62,6 @@ main = do
   print (neOne == neTwo)
   print (neOne == neThree)
   print (neOne == neFour)
+
+  print (Infinite == (Finite 0))
+  print $ compare Infinite (Finite 10)

@@ -4,13 +4,16 @@ import Prelude
 import Control.Monad.Eff
 import Control.Monad.Eff.Console
 
-data NonEmpty a = NonEmpty a (Array a)
+import Data.List
+import Data.Foldable
 
 {-
   Exercise 1
   (Easy) Write an Eq instance for the type NonEmpty a which reuses the instances
   for Eq a and Eq (Array a).
 -}
+
+data NonEmpty a = NonEmpty a (Array a)
 
 instance eqNonEmpty :: (Eq a) => Eq (NonEmpty a) where
   eq (NonEmpty firstValue firstArray) (NonEmpty secondValue secondArray) =
@@ -52,6 +55,10 @@ instance ordExtended :: (Ord a) => Ord (Extended a) where
     instance foldableOneMore :: (Foldable f) => Foldable (OneMore f) where
     ...
 -}
+
+-- data OneMore f a = OneMore a (f a)
+--
+-- instance foldableOneMore :: (Foldable f) => Foldable (OneMore f) where
 
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do

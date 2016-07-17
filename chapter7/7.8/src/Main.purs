@@ -24,6 +24,18 @@ maybeMul = lift2 (*)
 maybeDiv :: forall a. (EuclideanRing a) => Maybe a -> Maybe a -> Maybe a
 maybeDiv = lift2 (/)
 
+{-
+  Exercise 3
+  (Difficult) Write a function combineMaybe which has type
+  forall a f. (Applicative f) => Maybe (f a) -> f (Maybe a). This function takes
+  an optional computation with side-effects, and returns a side-effecting
+  computation which has an optional result.
+-}
+
+combineMaybe :: forall a f. (Applicative f) => Maybe (f a) -> f (Maybe a)
+combineMaybe (Just computation) = Just <$> computation
+combineMaybe Nothing = pure Nothing
+
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do
   logShow $ maybeAdd (Just 3) (Just 7)
